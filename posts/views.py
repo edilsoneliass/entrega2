@@ -2,10 +2,14 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post
 from django.utils.timezone import now
 from .forms import PostForm
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from .models import Post
+
 
 
 """ Primeira parte de implementação de views com arquivos funcionais sem Django Forms"""
-# Página inicial: lista de posts
+"""# Página inicial: lista de posts
 def listar_posts(request):
     posts = Post.objects.order_by('-data_postagem')
     return render(request, 'posts/listar_posts.html', {'posts': posts})
@@ -13,7 +17,7 @@ def listar_posts(request):
 # Detalhes de um post
 def detalhes_post(request, id):
     post = get_object_or_404(Post, id=id)
-    return render(request, 'posts/detalhes_post.html', {'post': post})
+    return render(request, 'posts/detalhes_post.html', {'post': post})"""
 
 """# Criar novo post
 def criar_post(request):
@@ -46,7 +50,7 @@ def deletar_post(request, id):
 
 """Segunda parte de implementação de views com Django Forms"""
 
-# Criar um novo post
+"""# Criar um novo post
 def criar_post(request):
     if request.method == 'POST':
         form = PostForm(request.POST)
@@ -75,4 +79,38 @@ def deletar_post(request, id):
     if request.method == 'POST':
         post.delete()
         return redirect('listar_posts')
-    return render(request, 'posts/confirmar_deletar.html', {'post': post})
+    return render(request, 'posts/confirmar_deletar.html', {'post': post})"""
+
+"""Terceira parte de implementação de views genéricas"""
+
+# Listar posts
+class PostListView(ListView):
+    model = Post
+    template_name = 'posts/listar_posts.html'
+    context_object_name = 'posts'
+    ordering = ['-data_postagem']
+
+# Detalhes do post
+class PostDetailView(DetailView):
+    model = Post
+    template_name = 'posts/detalhes_post.html'
+
+# Criar post
+class PostCreateView(CreateView):
+    model = Post
+    fields = ['titulo', 'conteudo']
+    template_name = 'posts/form_post.html'
+    success_url = reverse_lazy('listar_posts')
+
+# Editar post
+class PostUpdateView(UpdateView):
+    model = Post
+    fields = ['titulo', 'conteudo']
+    template_name = 'posts/form_post.html'
+    success_url = reverse_lazy('listar_posts')
+
+# Deletar post
+class PostDeleteView(DeleteView):
+    model = Post
+    template_name = 'posts/confirmar_deletar.html'
+    success_url = reverse_lazy('listar_posts')
