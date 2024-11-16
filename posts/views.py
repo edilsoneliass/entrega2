@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post
+from .models import Post, Comment
+from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
 from .forms import PostForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -9,17 +10,18 @@ from .models import Post
 
 
 """ Primeira parte de implementação de views com arquivos funcionais sem Django Forms"""
-"""# Página inicial: lista de posts
+# Página inicial: lista de posts
 def listar_posts(request):
     posts = Post.objects.order_by('-data_postagem')
     return render(request, 'posts/listar_posts.html', {'posts': posts})
 
-# Detalhes de um post
+# Detalhes de um post com exibição dos comentários
 def detalhes_post(request, id):
     post = get_object_or_404(Post, id=id)
-    return render(request, 'posts/detalhes_post.html', {'post': post})"""
+    comentarios = post.comments.order_by('-data_postagem')  # Ordenar por mais recente
+    return render(request, 'posts/detalhes_post.html', {'post': post, 'comentarios': comentarios})
 
-"""# Criar novo post
+# Criar novo post
 def criar_post(request):
     if request.method == 'POST':
         titulo = request.POST.get('titulo')
@@ -46,7 +48,18 @@ def deletar_post(request, id):
     if request.method == 'POST':
         post.delete()
         return redirect('listar_posts')
-    return render(request, 'posts/confirmar_deletar.html', {'post': post})"""
+    return render(request, 'posts/confirmar_deletar.html', {'post': post})
+
+# View para criar um comentário
+@login_required
+def criar_comentario(request, id):
+    post = get_object_or_404(Post, id=id)
+    if request.method == 'POST':
+        texto = request.POST.get('texto')
+        if texto:
+            Comment.objects.create(post=post, autor=request.user, texto=texto, data_postagem=now())
+            return redirect('detalhes_post', id=post.id)
+    return render(request, 'posts/form_comentario.html', {'post': post})
 
 """Segunda parte de implementação de views com Django Forms"""
 
@@ -83,7 +96,7 @@ def deletar_post(request, id):
 
 """Terceira parte de implementação de views genéricas"""
 
-# Listar posts
+"""# Listar posts
 class PostListView(ListView):
     model = Post
     template_name = 'posts/listar_posts.html'
@@ -113,4 +126,5 @@ class PostUpdateView(UpdateView):
 class PostDeleteView(DeleteView):
     model = Post
     template_name = 'posts/confirmar_deletar.html'
-    success_url = reverse_lazy('listar_posts')
+    success_url = reverse_lazy('listar_posts')"""
+
