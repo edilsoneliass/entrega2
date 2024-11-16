@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post, Comment
+from .models import Post, Comment, Category
 from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
 from .forms import PostForm
@@ -19,7 +19,8 @@ def listar_posts(request):
 def detalhes_post(request, id):
     post = get_object_or_404(Post, id=id)
     comentarios = post.comments.order_by('-data_postagem')  # Ordenar por mais recente
-    return render(request, 'posts/detalhes_post.html', {'post': post, 'comentarios': comentarios})
+    categorias = post.categorias.all()
+    return render(request, 'posts/detalhes_post.html', {'post': post, 'comentarios': comentarios, 'categorias': categorias} )
 
 # Criar novo post
 def criar_post(request):
@@ -49,6 +50,17 @@ def deletar_post(request, id):
         post.delete()
         return redirect('listar_posts')
     return render(request, 'posts/confirmar_deletar.html', {'post': post})
+
+# Página lista de categorias
+def listar_categorias(request):
+    categorias = Category.objects.all()
+    return render(request, 'posts/listar_categorias.html', {'categorias': categorias})
+
+# View individual de cada categoria
+def detalhes_categoria(request, id):
+    categoria = get_object_or_404(Category, id=id)
+    posts = categoria.posts.order_by('-data_postagem')
+    return render(request, 'posts/listar_posts.html', {'posts': posts, 'categoria': categoria})
 
 # View para criar um comentário
 @login_required

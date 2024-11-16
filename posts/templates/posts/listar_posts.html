@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-<h2>Posts</h2>
+{% if categoria %}
+    <h2>Posts na categoria "{{ categoria.nome }}"</h2>
+{% else %}
+    <h2>Posts</h2>
+{% endif %}
 <ul>
     {% for post in posts %}
         <li>
             <a href="{% url 'detalhes_post' post.id %}">{{ post.titulo }}</a>
-            (Publicado em {{ post.data_postagem|date:"d/m/Y H:i" }})
         </li>
     {% endfor %}
 </ul>
