@@ -2,14 +2,16 @@
 
 {% block content %}
 <h2>{% if post %}Editar{% else %}Criar{% endif %} Post</h2>
+<div class="content-box">
 <form method="post">
     {% csrf_token %}
     <label for="titulo">Título:</label>
-    <input type="text" name="titulo" id="titulo" value="{{ post.titulo|default:'' }}">
+    <input type="text" name="titulo" id="titulo" value="{{ post.titulo|default:'' }}" class="title-input">
     <br>
     <label for="conteudo">Conteúdo:</label>
-    <textarea name="conteudo" id="conteudo">{{ post.conteudo|default:'' }}</textarea>
+    <textarea name="conteudo" id="conteudo" class="content-input">{{ post.conteudo|default:'' }}</textarea>
     <br>
-    <button type="submit">Salvar</button>
+    <button type="submit" class="submit-btn">Salvar</button>
 </form>
+</div>
 {% endblock %}

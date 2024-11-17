@@ -1,16 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% if categoria %}
-    <h2>Posts na categoria "{{ categoria.nome }}"</h2>
-{% else %}
-    <h2>Posts</h2>
-{% endif %}
-<ul>
-    {% for post in posts %}
-        <li>
-            <a href="{% url 'detalhes_post' post.id %}">{{ post.titulo }}</a>
-        </li>
-    {% endfor %}
-</ul>
+<section class="categories">
+    {% if categoria %}
+        <h2 class="categories-title">Posts na categoria "{{ categoria.nome }}"</h2>
+    {% else %}
+        <h2 class="categories-title">Posts</h2>
+    {% endif %}
+    <ul class="category-list">
+        {% for post in posts %}
+            <li class="category-item">
+                <a href="{% url 'detalhes_post' post.id %}" class="category-link">{{ post.titulo }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <br>
+</section>
 {% endblock %}

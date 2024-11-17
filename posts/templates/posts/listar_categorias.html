@@ -1,13 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Categorias</h2>
-<ul>
+<section class="categories">
+<h2 class="categories-title">Categorias</h2>
+<ul class="category-list">
     {% for categoria in categorias %}
-        <li>
-            <a href="{% url 'detalhes_categoria' categoria.id %}">{{ categoria.nome }}</a>
+        <li class="category-item">
+            <a href="{% url 'detalhes_categoria' categoria.id %}" class="category-link">{{ categoria.nome }}</a>
         </li>
     {% endfor %}
 </ul>
-<a href="{% url 'listar_posts' %}">Voltar</a>
+<br>
+<a href="{% url 'listar_posts' %}" class="submit-btn">Voltar</a>
+</section>
 {% endblock %}

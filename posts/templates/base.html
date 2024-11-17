@@ -9,21 +9,27 @@
 </head>
 
 <body>
-    <header>
-        <nav>
-            <a>Datatica</a>
-            <ul>
-                <li><a href="{% url 'listar_posts' %}">Home</a></li>
-                <li><a href="{% url 'listar_categorias' %}">Categorias</a></li>
-                <li><a href="{% url 'criar_post' %}">Novo Post</a></li>
-            </ul>
-        </nav>
+    <header class="header">
+        <div class="container">
+            <h1>Datatica</h1>
+            <nav class="nav">
+                <ul>
+                    <li><a href="{% url 'listar_posts' %}">Home</a></li>
+                    <li><a href="{% url 'listar_categorias' %}">Categorias</a></li>
+                    <li><a href="{% url 'criar_post' %}">Novo Post</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
     
-    <main>
+    <main class="main">
         {% block content %}
         {% endblock %}
     </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 Datatica. Todos os direitos reservados.</p>
+    </footer>
 
 </body>
 

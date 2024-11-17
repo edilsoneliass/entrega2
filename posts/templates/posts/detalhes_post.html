@@ -1,20 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
+<div class="container_posts">
     <div class="post">
         <h2 class="post-title">{{ post.titulo }}</h2>
         <p class="post-date">Publicado em {{ post.data_postagem|date:"d/m/Y H:i" }}</p>
         <p class="post-content">{{ post.conteudo|safe }}</p>
     </div>
 </div>
-<a href="{% url 'editar_post' post.id %}">Editar</a>
-<a href="{% url 'deletar_post' post.id %}">Deletar</a>
+<div class="container_edit">
+<a href="{% url 'editar_post' post.id %}" class="submit-btn">Editar</a>
+<a href="{% url 'deletar_post' post.id %}" class="submit-btn">Deletar</a>
+</div>
+<h3>Categorias</h3>
 
-<h3>Categorias:</h3>
-<ul>
+<ul class="category-list">
     {% for categoria in categorias %}
-        <li><a href="{% url 'detalhes_categoria' categoria.id %}">{{ categoria.nome }}</a></li>
+        <li><a href="{% url 'detalhes_categoria' categoria.id %}" class="category-item">{{ categoria.nome }}</a></li>
     {% endfor %}
 </ul>
 
@@ -33,6 +35,6 @@
 {% else %}
     <p>Este post ainda não tem comentários.</p>
 {% endif %}
-<a href="{% url 'criar_comentario' post.id %}">Adicionar comentário</a>
-<a href="{% url 'listar_posts' %}">Voltar</a>
+<a href="{% url 'criar_comentario' post.id %}" class="submit-btn">Adicionar comentário</a>
+<a href="{% url 'listar_posts' %}" class="submit-btn">Voltar</a>
 {% endblock %}
